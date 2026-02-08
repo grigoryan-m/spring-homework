@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -25,7 +27,23 @@ public class User {
     @Column(name = "age")
     private int age;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id", foreignKey = @ForeignKey(name = fk_user_address_id))
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(o == null || o.getClass() != getClass()) return false;
+        User user = (User) o;
+        return login.equals(user.login);
+    }
+    @Override
+    public int hashCode(){
+        return Objects.hashCode(login);
+    }
+    @Override
+    public String toString(){
+        return "[ID]: " + id + "\n[Login]: " + login;
+    }
 }
